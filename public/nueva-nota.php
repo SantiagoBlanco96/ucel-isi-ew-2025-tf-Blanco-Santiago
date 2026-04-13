@@ -20,6 +20,7 @@ require_once __DIR__ . '/app/layout/header.php';
         action="/procesar-nota.php"
         method="POST"
         id="form-nueva-nota"
+        novalidate
         role="form"
         aria-label="Formulario de generación de nota periodística"
     >
