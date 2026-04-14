@@ -6,6 +6,8 @@ require_once __DIR__ . '/app/bootstrap.php';
 require_once __DIR__ . '/app/NotaService.php';
 require_once __DIR__ . '/app/N8nService.php';
 
+error_log('POST recibido: ' . print_r($_POST, true));
+
 $auth = new Auth();
 $auth->requireLogin();
 
@@ -72,10 +74,14 @@ if (count($urlsNormalizadas) > 5) {
     $errores[] = 'Solo se permiten hasta 5 URLs fuente.';
 }
 
+error_log('Errores tras validar urls: ' . print_r($errores, true));
+
 $seccion = trim((string) ($_POST['seccion'] ?? ''));
 if (!in_array($seccion, $seccionesPermitidas, true)) {
     $errores[] = 'La sección seleccionada no es válida.';
 }
+
+error_log('Errores tras validar seccion: ' . print_r($errores, true));
 
 $extension = trim((string) ($_POST['extension'] ?? ''));
 if (!in_array($extension, $extensionesPermitidas, true)) {
@@ -97,11 +103,16 @@ if (mb_strlen($instruccionesExtra) > 1000) {
     $errores[] = 'Las instrucciones adicionales no pueden superar los 1000 caracteres.';
 }
 
+error_log('Errores finales: ' . print_r($errores, true));
+
 if ($errores !== []) {
+    error_log('REDIRIGIENDO por errores');
     $_SESSION['errores'] = $errores;
     header('Location: /nueva-nota.php');
     exit;
 }
+
+error_log('PASÓ VALIDACIÓN, llamando a n8n');
 
 $usuarioId = (int) ($_SESSION['id'] ?? $_SESSION['user_id'] ?? 0);
 

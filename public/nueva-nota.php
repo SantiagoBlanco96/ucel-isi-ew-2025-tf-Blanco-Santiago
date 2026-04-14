@@ -8,12 +8,28 @@ $auth = new Auth();
 $auth->requireLogin();
 
 $pageTitle = 'Redacta — Nueva Nota';
+$erroresServidor = $_SESSION['errores'] ?? [];
+unset($_SESSION['errores']);
+
+if (!is_array($erroresServidor)) {
+    $erroresServidor = [];
+}
 
 require_once __DIR__ . '/app/layout/header.php';
 ?>
 
 <section aria-labelledby="nueva-nota-heading">
     <h1 class="login__title" id="nueva-nota-heading">Nueva nota</h1>
+
+    <?php if ($erroresServidor !== []) : ?>
+        <div class="form-nota__errores-servidor" role="alert" aria-live="polite">
+            <ul>
+                <?php foreach ($erroresServidor as $error) : ?>
+                    <li><?= htmlspecialchars((string) $error, ENT_QUOTES, 'UTF-8') ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    <?php endif; ?>
 
     <form
         class="form-nota"
