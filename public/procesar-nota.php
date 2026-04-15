@@ -6,6 +6,8 @@ require_once __DIR__ . '/app/bootstrap.php';
 require_once __DIR__ . '/app/NotaService.php';
 require_once __DIR__ . '/app/N8nService.php';
 
+error_log('N8N_WEBHOOK_URL value: ' . (getenv('N8N_WEBHOOK_URL') ?: 'VACÍA'));
+
 error_log('POST recibido: ' . print_r($_POST, true));
 
 $auth = new Auth();

@@ -9,7 +9,9 @@ $auth->requireLogin();
 
 $pageTitle = 'Redacta — Nueva Nota';
 $erroresServidor = $_SESSION['errores'] ?? [];
+ $errorGeneracion = $_SESSION['error_generacion'] ?? null;
 unset($_SESSION['errores']);
+unset($_SESSION['error_generacion']);
 
 if (!is_array($erroresServidor)) {
     $erroresServidor = [];
@@ -20,6 +22,14 @@ require_once __DIR__ . '/app/layout/header.php';
 
 <section aria-labelledby="nueva-nota-heading">
     <h1 class="login__title" id="nueva-nota-heading">Nueva nota</h1>
+
+    <?php if (is_string($errorGeneracion) && $errorGeneracion !== '') : ?>
+        <div class="form-nota__errores-servidor" role="alert" aria-live="polite">
+            <ul>
+                <li><?= htmlspecialchars($errorGeneracion, ENT_QUOTES, 'UTF-8') ?></li>
+            </ul>
+        </div>
+    <?php endif; ?>
 
     <?php if ($erroresServidor !== []) : ?>
         <div class="form-nota__errores-servidor" role="alert" aria-live="polite">
